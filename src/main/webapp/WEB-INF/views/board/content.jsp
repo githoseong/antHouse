@@ -193,6 +193,10 @@ function replyDel(idx) {
 .btn3:hover {
 	font-weight: bold;
 }
+#alal img{
+	max-width: 100%;
+	height: auto;
+}
 </style>
 <body>
 <div id="container">
@@ -239,7 +243,7 @@ function replyDel(idx) {
 				<c:forEach var="vo" items="${vos}" varStatus="st">
 					<tr>
 						<td>${st.count}</td>
-						<td style="text-align: left;" id="con${vo.idx}" class="con${vo.idx}">${fn:replace(vo.content,newLine,"</br>")}</td>
+						<td style="text-align: left;" id="con${vo.idx}" class="con${vo.idx}" >${fn:replace(vo.content,newLine,"</br>")}</td>
 						<td>${vo.name}</td>
 						<td>${vo.WDate}</td>
 						<td><span onclick="reGood(${vo.idx})" style="cursor: pointer;">❤ ${vo.good}</span></td>
