@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.practice.dao.MemberDAO">
+	
+	<select id="idCheck" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup where mid = #{mid};
+	</select>
+	
+	<select id="signupIdCheck" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup where mid = #{mid};
+	</select>
+	
+	<select id="loginCheck" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup where mid = #{vo.mid} and pwd = #{vo.pwd};
+	</select>
+	
+	<select id="adMain" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup order by totalCnt desc limit 1;
+	</select>
+	<select id="adMain2" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup order by totalCnt desc limit 2,1;
+	</select> 
+	<select id="adMain3" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup order by totalCnt desc limit 3,1;
+	</select>
+	<select id="adMain4" resultType="com.spring.practice.vo.SignupVO">
+		select sum(totalCnt) cnt from signup;
+	</select>
+	<select id="adMain5" resultType="com.spring.practice.vo.SignupVO">
+		select sum(todayCnt) cnt from signup;
+	</select>
+	<select id="adMain6" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup order by todayCnt desc limit 1;
+	</select>
+	<select id="adMain7" resultType="com.spring.practice.vo.SignupVO">
+		select sum(totalCnt) cnt from signup where  7 > DATEDIFF(now(),lastDate) ;
+	</select>
+	<select id="adMain8" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup order by lastDate desc limit 20;
+	</select>
+	<select id="adMain9" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup order by startDate desc limit 20;
+	</select>
+	
+	<select id="adMember" resultType="com.spring.practice.vo.SignupVO">
+		select * from signup order by idx desc limit #{startIndexNum}, #{listNum};
+	</select>
+	
+	<select id="totRecCnt" resultType="int">
+		select count(*) from signup;
+	</select>
+	
+	<insert id="signupOk">
+		insert into signup values (default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.mail},#{vo.tel},default,default,default,default,default,default,#{vo.photo});
+	</insert>
+
+	<update id="loginUpdate">
+		update signup set totalCnt = totalCnt + #{vo.totalCnt} , todayCnt = #{vo.todayCnt} + 1 , lastDate = now() where mid = #{vo.mid};
+	</update>
+	
+	<update id="myPageUpdatePost">
+		update signup set pwd=#{vo.pwd}, name=#{vo.name}, mail=#{vo.mail}, tel=#{vo.tel}, photo=#{vo.photo} where mid = #{vo.mid};
+	</update>
+	
+	<update id="levelUp">
+		update signup set level = #{level} + 1 where mid = #{mid};
+	</update>
+	<update id="levelDown">
+		update signup set level = #{level} - 1 where mid = #{mid};
+	</update>
+</mapper>

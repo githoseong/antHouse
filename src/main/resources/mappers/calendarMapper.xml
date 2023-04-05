@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.practice.dao.CalendarDAO">
+	<select id="calender" resultType="com.spring.practice.vo.CalendarVO">
+		select * from calendar;
+	</select>
+	<select id="calenderCon" resultType="com.spring.practice.vo.CalendarVO">
+		select * from calendar where idx = #{idx};
+	</select>
+	<select id="myCalendar" resultType="com.spring.practice.vo.CalendarVO">
+		select * from calendar where mid = #{mid} order by myDate desc limit #{startIndexNum}, #{listNum};
+	</select>
+	
+	<select id="totRecCnt" resultType="int">
+		select count(*) from calendar where mid = #{mid};
+	</select>
+	
+	<insert id="calendarInputPost">
+		insert into calendar values (default,#{mid},#{name},default,#{vo.content},#{vo.title},#{vo.myDate});
+	</insert>
+	
+	<update id="calenderConPost">
+		update calendar set title = #{vo.title} , content = #{vo.content} where idx = #{vo.idx};
+	</update>
+	
+	<delete id="calDelete">
+		delete from calendar where idx = #{idx};
+	</delete>
+</mapper>

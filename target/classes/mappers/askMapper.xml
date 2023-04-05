@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.practice.dao.AskDAO">
+	
+	<select id="adAskList" resultType="com.spring.practice.vo.AskVO">
+		select * from ask where part = #{part} and del = '0' order by idx desc limit #{startIndexNum} , #{listNum};
+	</select>
+	
+	<select id="adAskContent" resultType="com.spring.practice.vo.AskVO">
+		select * from ask where idx =#{idx};
+	</select>
+	
+	<select id="adAskConReply" resultType="com.spring.practice.vo.AskAnswerVO">
+		select * from askanswer where answerIdx = #{idx}; 
+	</select>
+	
+	<select id="myAsk" resultType="com.spring.practice.vo.AskVO">
+		select * from ask where mid = #{mid} order by idx desc limit #{startIndexNum},#{listNum}; 
+	</select>
+	
+	<select id="totRecCnt" resultType="int">
+		select count(*) from ask where part = #{part} and del = '0';
+	</select>
+	<select id="totRecCnt2" resultType="int">
+		select count(*) from ask where mid = #{mid};
+	</select>
+
+	<insert id="askPost">
+		insert into ask values (default,#{vo.mid},#{vo.name},#{vo.title},#{vo.content},default,default,#{vo.part},default);
+	</insert>
+	
+	<insert id="adAskReply">
+		insert into askanswer values (default,#{answerIdx},'관리자',#{content},default);	
+	</insert>
+
+	<update id="adAskUpdate">
+		update ask set answer = 'YES' where idx = #{answerIdx};
+	</update>
+	
+	<update id="adAskDel">
+		update ask set del = '1' where idx = #{idx};
+	</update>
+	
+	<delete id="myAskDel">
+		delete from ask where idx = #{idx};
+	</delete>
+</mapper>

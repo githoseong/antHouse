@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.practice.dao.BoardDAO">
+
+	<!-- <sql id="commonWhere">
+		<if test="search == 'title'">
+			title like concat('%',#{boardSearch},'%');
+		</if>
+		<if test="search == 'name'">
+			name like concat('%',#{boardSearch},'%');
+		</if>
+		<if test="search == 'content'">
+			content like concat('%',#{boardSearch},'%');
+		</if>
+	</sql> -->
+	
+	 <!-- <include refid="commonWhere" /> -->
+	 
+	<select id="boardList" resultType="com.spring.practice.vo.BoardVO">
+		<if test = "flag == 1">
+			select * from board where ${search} like concat('%',#{boardSearch},'%') order by idx desc limit #{startIndexNum},#{listNum};
+		</if>
+		<if test = "flag == 0">
+			select * from board order by idx desc limit #{startIndexNum},#{listNum};
+		</if>
+	</select>
+	
+	<select id="boardContent" resultType="com.spring.practice.vo.BoardVO">
+		select * from board where idx = #{idx};
+	</select>
+	
+	<select id="boardReplyArr" resultType="com.spring.practice.vo.BoardReplyVO">
+		select * from boardreply where boardIdx = #{idx};
+	</select>
+	
+	<select id="homeBoardList" resultType="com.spring.practice.vo.BoardVO">
+		select * from board order by idx desc limit 0, 8;
+	</select>
+	
+	<select id="adMainBoard" resultType="com.spring.practice.vo.BoardVO">
+		select count(*) cnt from board where mid = #{mid};
+	</select>
+	
+	<select id="adMainBoardRe" resultType="com.spring.practice.vo.BoardReplyVO">
+		select count(*) cnt from boardreply where mid = #{mid};
+	</select>
+	
+	
+	<select id="totRecCnt" resultType="int">
+		<if test="flag == 1">
+			select count(*) from board where ${search} like concat('%',#{boardSearch},'%');
+		</if>
+		<if test="flag == 0">
+			select count(*) from board;
+		</if>
+	</select>
+	
+	<update id="boardGood">
+		update board set good= good + 1 where idx = #{idx};
+	</update>
+	<update id="boardBad">
+		update board set bad= bad + 1 where idx = #{idx};
+	</update>
+	<update id="boardReGood">
+		update boardreply set good= good + 1 where idx = #{idx};
+	</update>
+	<update id="boardReplyUpdate">
+		update boardreply set content = #{vo.content} where idx = #{vo.idx};
+	</update>
+	<update id="setReadNum">
+		update board set readNum = readNum + 1 where idx = #{idx};
+	</update>
+	
+	<insert id="boardInput">
+		insert into board values (default,#{vo.title},#{vo.content},default,default,default,default,#{vo.mid},#{vo.name});
+	</insert>
+	
+	<insert id="boardReply">
+		insert into boardreply values (default,#{vo.boardIdx},#{vo.mid},#{vo.name},default,#{vo.content},default);
+	</insert>
+	
+	<update id="boardUpdateSet">
+		update board set title = #{vo.title}, content = #{vo.content} where idx = #{idx};
+	</update>
+	
+	<delete id="boardDel">
+		delete from board where idx = #{idx};
+	</delete>
+	<delete id="boardReplyDel">
+		delete from boardreply where idx = #{idx};
+	</delete>
+</mapper>
